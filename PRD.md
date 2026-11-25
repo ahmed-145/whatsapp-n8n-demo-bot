@@ -87,12 +87,12 @@ P1 (nice to have, add only if the day allows):
   - `faq.json`: the bilingual FAQ table
   - `demo/`: eight screenshots from the live demo showing English and Arabic booking and handoff, with the tester’s real number redacted from the notification previews. The [recording script](demo/recording.md) is retained for a future video.
 - Live verification completed on the Meta test number. English and Arabic booking and handoff each produced a WhatsApp reply and an email in the Mailpit test inbox.
-- Link ready to drop into outreach follow-ups.
+- **Pending for outreach:** a link prospects can open. The repository is private. The screenshots can be shared directly, and the WhatsApp test number is available for demos while the temporary tunnel and local services are running.
 
 ## 8. Success criteria
 
-- A non-technical clinic owner can message the number, book, and see the business notification without explanation.
-- Full demo loop completes in under 2 minutes.
+- **Verified with the project owner:** a tester can message the number, request an appointment, and see the clinic notification. A walkthrough with a non-technical clinic owner is unverified.
+- **Untimed:** the full walkthrough target is under two minutes.
 - Zero cost incurred.
 - Every claim in the outreach offer ("WhatsApp bots, n8n automations") now has a working artifact behind it.
 
@@ -106,7 +106,6 @@ P1 (nice to have, add only if the day allows):
 ## 10. Later milestones (not in this build)
 
 - Optional 60–90 second outreach recording using the existing script.
-
 - RAG answering over the client's real documents (reuses existing RAG experience).
 - Real calendar booking (Google Calendar node).
 - Dashboard productization for the paid starter package (about $100).
