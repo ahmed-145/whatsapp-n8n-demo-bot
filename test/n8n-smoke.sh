@@ -27,5 +27,5 @@ docker run --rm "${n8n_args[@]}" "$N8N_IMAGE" import:credentials --input=/fixtur
 docker run --rm "${n8n_args[@]}" "$N8N_IMAGE" import:workflow --input=/fixtures/workflow.json
 docker run --rm "${n8n_args[@]}" "$N8N_IMAGE" publish:workflow --id=demoClinicSmoke1
 docker run -d --name demo-n8n "${n8n_args[@]}" -p 127.0.0.1:5678:5678 "$N8N_IMAGE"
-curl -fsS --retry 30 --retry-connrefused --retry-delay 2 http://127.0.0.1:5678/healthz/readiness
+curl -fsS --retry 30 --retry-all-errors --connect-timeout 2 --max-time 5 --retry-delay 2 http://127.0.0.1:5678/healthz/readiness
 node test/n8n-smoke.js
