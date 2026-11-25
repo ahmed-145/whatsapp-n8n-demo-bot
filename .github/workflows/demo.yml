@@ -1,0 +1,18 @@
+name: Demo checks
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: |
+          node test/demo.test.js
+          node scripts/build-workflow.js
+          git diff --exit-code -- workflow.json
+      - run: bash test/n8n-smoke.sh
