@@ -1,0 +1,103 @@
+{
+  "name": "Nile Dental Care | WhatsApp demo",
+  "nodes": [
+    {
+      "id": "ac6fa6ee-0aa5-4ff3-bfcd-6969d5a9c310",
+      "name": "Incoming message",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "clinic-demo-message",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "webhookId": "ac6fa6ee-0aa5-4ff3-bfcd-6969d5a9c310"
+    },
+    {
+      "id": "ac6fa6ee-0aa5-4ff3-bfcd-6969d5a9c311",
+      "name": "Route conversation",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        250,
+        0
+      ],
+      "parameters": {
+        "jsCode": "function conversation({ message, previous, faq, clinic }) {\n  const digits = value => value.replace(/[٠-٩۰-۹]/g, digit =>\n    String('٠١٢٣٤٥٦٧٨٩۰۱۲۳۴۵۶۷۸۹'.indexOf(digit) % 10));\n  const text = digits(message.text.normalize('NFKC')).trim();\n  const word = text.toLowerCase();\n  const language = /\\p{Script=Arabic}/u.test(text) ? 'ar'\n    : /[a-z]/i.test(text) && (!previous?.step || /^(hi|hello|menu|cancel)$/i.test(text)) ? 'en'\n    : previous?.language ?? 'en';\n  const say = (en, ar) => language === 'ar' ? ar : en;\n  const menu = say(\n    `Welcome to ${clinic.name.en} (demo). Reply with a number:\\n1. Services & prices\\n2. Hours & location\\n3. Request an appointment\\n4. Talk to the clinic`,\n    `أهلاً بك في ${clinic.name.ar} (عرض تجريبي). اختر رقماً:\\n١. الخدمات والأسعار\\n٢. المواعيد والعنوان\\n٣. طلب موعد\\n٤. التواصل مع العيادة`,\n  );\n  const state = { ...previous, language };\n  const respond = (reply, event) => ({ state, reply, event });\n  const reset = () => {\n    delete state.step;\n    delete state.name;\n    delete state.phone;\n  };\n  if (/^(menu|hi|hello|القائمة|مرحبا|أهلا|اهلا|السلام عليكم)$/.test(word) && (!state.step || /^(menu|القائمة)$/.test(word))) {\n    reset();\n    return respond(menu);\n  }\n  if (/^(cancel|إلغاء|الغاء)$/.test(word)) {\n    reset();\n    return respond(menu);\n  }\n  if (!previous) {\n    state.lastText = text.slice(0, 500);\n    return respond(menu);\n  }\n  const services = clinic.services.map(id => faq.find(item => item.id === id));\n  if (state.step === 'name') {\n    if (text.length > 80 || !/^\\p{L}[\\p{L}\\p{M} .'-]+$/u.test(text)) {\n      return respond(say('Please enter your name.', 'من فضلك اكتب اسمك.'));\n    }\n    state.name = text;\n    state.step = 'phone';\n    return respond(say('What is your phone number? Include the country code, e.g. +201000000000.', 'ما رقم هاتفك؟ اكتب كود الدولة، مثلاً ‎+201000000000.'));\n  }\n  const exampleSlot = () => {\n    const date = new Date(message.timestamp);\n    do {\n      date.setUTCDate(date.getUTCDate() + 1);\n    } while (!clinic.openDays.includes(date.getUTCDay()));\n    return `1 ${date.toISOString().slice(0, 10)} ${clinic.opensAt}`;\n  };\n  if (state.step === 'phone') {\n    const phone = text.replace(/[ ()-]/g, '');\n    if (!/^\\+[1-9]\\d{7,14}$/.test(phone)) {\n      return respond(say('Please enter a valid phone number with its country code.', 'من فضلك اكتب رقم هاتف صحيح مع كود الدولة.'));\n    }\n    state.phone = phone;\n    state.step = 'slot';\n    const choices = services.map((item, index) => `${index + 1}. ${item[language].question}`).join('\\n');\n    return respond(say(\n      `Send the service number, date and Cairo time in one message, like: ${exampleSlot()}\\n${choices}`,\n      `أرسل رقم الخدمة والتاريخ والوقت بتوقيت القاهرة في رسالة واحدة، مثلاً: ${exampleSlot()}\\n${choices}`,\n    ));\n  }\n  if (state.step === 'slot') {\n    const match = /^(\\d{1,2})\\s+(\\d{4}-\\d{2}-\\d{2})\\s+((?:[01]\\d|2[0-3]):[0-5]\\d)$/.exec(text);\n    const service = match && services[Number(match[1]) - 1];\n    const date = match && new Date(`${match[2]}T00:00:00Z`);\n    const parts = new Intl.DateTimeFormat('en-GB', {\n      timeZone: clinic.timeZone, year: 'numeric', month: '2-digit', day: '2-digit',\n      hour: '2-digit', minute: '2-digit', hourCycle: 'h23',\n    }).formatToParts(new Date(message.timestamp));\n    const now = Object.fromEntries(parts.map(({ type, value }) => [type, value]));\n    const valid = service && Number.isFinite(date.valueOf()) && date.toISOString().slice(0, 10) === match[2]\n      && clinic.openDays.includes(date.getUTCDay()) && match[3] >= clinic.opensAt && match[3] < clinic.closesAt\n      && `${match[2]} ${match[3]}` > `${now.year}-${now.month}-${now.day} ${now.hour}:${now.minute}`;\n    if (!valid) {\n      return respond(say(\n        `Please send a service number and a future date and time during opening hours (${clinic.opensAt}–${clinic.closesAt}), e.g. ${exampleSlot()}.`,\n        `من فضلك أرسل رقم خدمة وتاريخ ووقت في المستقبل خلال ساعات العمل (${clinic.opensAt}–${clinic.closesAt})، مثلاً: ${exampleSlot()}.`,\n      ));\n    }\n    const event = {\n      type: 'booking', name: state.name, phone: state.phone, service: service.id,\n      slot: `${match[2]} ${match[3]}`, timeZone: clinic.timeZone,\n    };\n    reset();\n    return respond(say(\n      `Thanks, ${event.name}. We received your request for ${service.en.question} on ${event.slot} (Cairo time), phone ${event.phone}. The clinic will contact you to confirm.\\n\\n${menu}`,\n      `شكراً يا ${event.name}. استلمنا طلب ${service.ar.question} يوم ${event.slot} بتوقيت القاهرة، رقم الهاتف ${event.phone}. ستتواصل معك العيادة للتأكيد.\\n\\n${menu}`,\n    ), event);\n  }\n  if (word === '1' || word === '2') {\n    const entries = word === '1' ? services : faq.filter(item => ['hours', 'location'].includes(item.id));\n    const answers = entries.map(item => item[language].answer).join('\\n');\n    return respond(`${answers}\\n\\n${menu}`);\n  }\n  if (word === '3') {\n    state.step = 'name';\n    return respond(say('What is your name? Send “cancel” any time to return to the menu.', 'ما اسمك؟ أرسل «إلغاء» في أي وقت للرجوع للقائمة.'));\n  }\n  if (word === '4') {\n    return respond(say(\n      'I’ve passed your message to the clinic team. A person will reply as soon as they can.',\n      'حوّلت رسالتك لفريق العيادة. أحد أفراد الفريق هيرد عليك في أقرب وقت.',\n    ), { type: 'handoff', message: previous?.lastText || text });\n  }\n  state.lastText = text.slice(0, 500);\n  const words = word.split(/[^\\p{L}\\p{N}-]+/u).join(' ');\n  const answer = faq.find(item => item.keywords.some(keyword => ` ${words} `.includes(` ${keyword} `)));\n  if (answer) return respond(`${answer[language].answer}\\n\\n${menu}`);\n  return respond(say(`I didn’t catch that.\\n\\n${menu}`, `لم أفهم الرسالة.\\n\\n${menu}`));\n}\n\nreturn [{ json: conversation($input.first().json.body) }];"
+      }
+    },
+    {
+      "id": "ac6fa6ee-0aa5-4ff3-bfcd-6969d5a9c312",
+      "name": "Clinic notification",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        240
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "clinic-demo-notify",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "webhookId": "ac6fa6ee-0aa5-4ff3-bfcd-6969d5a9c312"
+    },
+    {
+      "id": "ac6fa6ee-0aa5-4ff3-bfcd-6969d5a9c313",
+      "name": "Email clinic",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        250,
+        240
+      ],
+      "parameters": {
+        "fromEmail": "={{ $json.body.from }}",
+        "toEmail": "={{ $json.body.to }}",
+        "subject": "={{ $json.body.subject }}",
+        "emailFormat": "text",
+        "text": "={{ $json.body.text }}",
+        "options": {
+          "appendAttribution": false
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Incoming message": {
+      "main": [
+        [
+          {
+            "node": "Route conversation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clinic notification": {
+      "main": [
+        [
+          {
+            "node": "Email clinic",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "none",
+    "saveDataSuccessExecution": "none",
+    "saveManualExecutions": false
+  }
+}

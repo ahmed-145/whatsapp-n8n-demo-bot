@@ -1,0 +1,37 @@
+services:
+  n8n:
+    image: ${N8N_IMAGE:-docker.n8n.io/n8nio/n8n:2.49.5}
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5678:5678"
+    environment:
+      GENERIC_TIMEZONE: Africa/Cairo
+      TZ: Africa/Cairo
+      EXECUTIONS_DATA_SAVE_ON_ERROR: none
+      EXECUTIONS_DATA_SAVE_ON_SUCCESS: none
+      EXECUTIONS_DATA_SAVE_MANUAL_EXECUTIONS: "false"
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./workflow.json:/demo/workflow.json:ro
+  gateway:
+    image: node:22-alpine
+    init: true
+    restart: unless-stopped
+    depends_on:
+      - n8n
+    ports:
+      - "127.0.0.1:8080:8080"
+    env_file: .env
+    environment:
+      N8N_INTERNAL_URL: http://n8n:5678
+      DATA_DIR: /data
+    working_dir: /demo
+    command: ["node", "gateway.js"]
+    volumes:
+      - ./gateway.js:/demo/gateway.js:ro
+      - ./clinic.json:/demo/clinic.json:ro
+      - ./faq.json:/demo/faq.json:ro
+      - leads:/data
+volumes:
+  n8n_data:
+  leads:

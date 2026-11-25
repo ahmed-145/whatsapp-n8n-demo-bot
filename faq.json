@@ -1,0 +1,14 @@
+[
+  {"id":"checkup","keywords":["checkup","exam","كشف","فحص"],"en":{"question":"Checkup","answer":"A dental checkup starts at EGP 300."},"ar":{"question":"الكشف","answer":"كشف الأسنان يبدأ من ٣٠٠ جنيه."}},
+  {"id":"cleaning","keywords":["cleaning","scaling","تنظيف","جير"],"en":{"question":"Cleaning","answer":"Cleaning starts at EGP 650."},"ar":{"question":"تنظيف الأسنان","answer":"تنظيف الأسنان يبدأ من ٦٥٠ جنيه."}},
+  {"id":"filling","keywords":["filling","cavity","حشو"],"en":{"question":"Filling","answer":"A filling starts at EGP 900."},"ar":{"question":"الحشو","answer":"الحشو يبدأ من ٩٠٠ جنيه."}},
+  {"id":"whitening","keywords":["whitening","تبييض"],"en":{"question":"Whitening","answer":"Whitening starts at EGP 2,500."},"ar":{"question":"التبييض","answer":"التبييض يبدأ من ٢٥٠٠ جنيه."}},
+  {"id":"braces","keywords":["braces","orthodontics","تقويم"],"en":{"question":"Braces","answer":"An orthodontic consultation starts at EGP 450."},"ar":{"question":"التقويم","answer":"استشارة التقويم تبدأ من ٤٥٠ جنيه."}},
+  {"id":"root-canal","keywords":["root canal","عصب"],"en":{"question":"Root canal","answer":"Root canal treatment starts at EGP 2,000."},"ar":{"question":"علاج العصب","answer":"علاج العصب يبدأ من ٢٠٠٠ جنيه."}},
+  {"id":"extraction","keywords":["extraction","remove","خلع"],"en":{"question":"Extraction","answer":"A simple extraction starts at EGP 800."},"ar":{"question":"الخلع","answer":"الخلع البسيط يبدأ من ٨٠٠ جنيه."}},
+  {"id":"children","keywords":["children","kids","pediatric","أطفال","اطفال"],"en":{"question":"Children’s dentistry","answer":"Children’s checkups start at EGP 350."},"ar":{"question":"أسنان الأطفال","answer":"كشف أسنان الأطفال يبدأ من ٣٥٠ جنيه."}},
+  {"id":"xray","keywords":["x-ray","xray","أشعة","اشعة"],"en":{"question":"Dental X-ray","answer":"Ask the clinic to confirm availability and price."},"ar":{"question":"أشعة الأسنان","answer":"اسأل العيادة عن توفر الأشعة وسعرها."}},
+  {"id":"hours","keywords":["hours","opening","مواعيد","ساعات"],"en":{"question":"Working hours","answer":"Saturday to Thursday, 10 am to 8 pm Cairo time. Friday closed."},"ar":{"question":"مواعيد العمل","answer":"من السبت للخميس من ١٠ صباحاً إلى ٨ مساءً بتوقيت القاهرة. الجمعة إجازة."}},
+  {"id":"location","keywords":["location","address","where","عنوان","مكان"],"en":{"question":"Location","answer":"Nasr City, Cairo. This is a fictional clinic and has no street address."},"ar":{"question":"العنوان","answer":"مدينة نصر، القاهرة. العيادة خيالية وليس لها عنوان فعلي."}},
+  {"id":"payment","keywords":["payment","card","cash","دفع","فيزا"],"en":{"question":"Payment","answer":"For this demo, assume cash and card are accepted at reception."},"ar":{"question":"الدفع","answer":"في هذا العرض، الدفع نقداً أو بالبطاقة في الاستقبال."}}
+]

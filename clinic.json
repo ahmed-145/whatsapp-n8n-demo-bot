@@ -1,0 +1,8 @@
+{
+  "name": {"en": "Nile Dental Care", "ar": "نايل دنتال كير"},
+  "services": ["checkup", "cleaning", "filling", "whitening", "braces", "root-canal", "extraction", "children"],
+  "timeZone": "Africa/Cairo",
+  "openDays": [0, 1, 2, 3, 4, 6],
+  "opensAt": "10:00",
+  "closesAt": "20:00"
+}
