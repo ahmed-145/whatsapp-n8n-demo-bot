@@ -1,7 +1,7 @@
 # PRD: WhatsApp + n8n Demo Bot for Direct-Client Outreach
 
 - **Owner:** Ahmed Mahmoud Abbas (software engineer in Egypt offering automation work to small businesses)
-- **Status:** Draft v2 (Nov 25, 2026)
+- **Status:** v1 demo verified on the Meta test number (Nov 25, 2026). Video deferred.
 - **Build time target:** ~1 day
 - **Budget:** $0 (free tiers and self-hosted only)
 
@@ -11,7 +11,7 @@
 
 **The problem.** Small businesses in Egypt and the Gulf (clinics, real estate offices, language centers, online shops) get most customer messages on WhatsApp and answer them by hand, often late. They lose bookings to slow replies. The owner of this repo sells WhatsApp bots and automations to such businesses, but a written offer is hard to trust. A business owner wants to try it on their own phone before paying.
 
-**The solution.** One real, demoable bot that costs nothing to run, plus a short screen recording. The same workflow can be cloned per client by editing data (business name, FAQ answers, booking rules), not code.
+**The solution.** One real, demoable bot that costs nothing to run, plus screenshots from the live demo. The same workflow can be cloned per client by editing data (business name, FAQ answers, booking rules), not code.
 
 **Who it is for.**
 1. Prospective clients: a non-technical business owner who should understand the value in under two minutes.
@@ -27,7 +27,7 @@ The owner sells WhatsApp bots, n8n automations, and simple dashboards to small b
 ## 2. Goals
 
 - A live demo bot a prospect can message on WhatsApp and get instant, useful replies.
-- A 60-90 second screen recording + screenshots for outreach emails and freelance marketplace gigs (Fiverr, Khamsat).
+- Screenshots from the live demo for outreach emails and freelance marketplace gigs (Fiverr, Khamsat).
 - Honest proof of skill: everything in the demo must actually work, no mockups.
 - Reusable base: the same n8n workflow should be cloneable per client with only content changes (business name, FAQ answers, booking rules).
 
@@ -85,8 +85,8 @@ P1 (nice to have, add only if the day allows):
   - `README.md`: setup steps from zero to running demo (Meta app creation, test number, webhook, n8n import), written so a client-facing technical person could follow it
   - `workflow.json`: the exported n8n workflow
   - `faq.json`: the bilingual FAQ table
-  - `demo/`: screenshots + the 60-90s screen recording script (what to show, in order)
-- The demo bot live on the test number and verified end-to-end in both languages.
+  - `demo/`: eight screenshots from the live demo showing English and Arabic booking and handoff, with the tester’s real number redacted from the notification previews. The [recording script](demo/recording.md) is retained for a future video.
+- Live verification completed on the Meta test number. English and Arabic booking and handoff each produced a WhatsApp reply and an email in the Mailpit test inbox.
 - Link ready to drop into outreach follow-ups.
 
 ## 8. Success criteria
@@ -98,12 +98,14 @@ P1 (nice to have, add only if the day allows):
 
 ## 9. Risks and mitigations
 
-- **Meta test number limits** (restricted recipient count, 24-hour windows): check current Meta docs at build time; demo with the prospect's number added as an allowed recipient, or demo by video when live messaging is not possible.
-- **n8n tunnel instability:** fall back to a short live screen-share video instead of a live number.
+- **Meta test number limits** (restricted recipient count, 24-hour windows): check current Meta docs at build time; demo with the prospect's number added as an allowed recipient, or share the screenshots when live messaging is unavailable.
+- **n8n tunnel instability:** share the screenshots if the temporary tunnel is unavailable.
 - **Scope creep into AI/RAG:** explicitly deferred; v1's fixed FAQ is more reliable in a demo anyway.
 - **WhatsApp policy:** never use the unofficial library for a paying client without disclosing the ban risk; Cloud API is the sellable path.
 
 ## 10. Later milestones (not in this build)
+
+- Optional 60–90 second outreach recording using the existing script.
 
 - RAG answering over the client's real documents (reuses existing RAG experience).
 - Real calendar booking (Google Calendar node).

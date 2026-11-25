@@ -2,7 +2,7 @@
 
 A fictional Cairo clinic built to demonstrate WhatsApp Cloud API and n8n. Customers get an Arabic or English menu, FAQs, appointment requests and a human handoff. n8n routes the conversation and emails the clinic. The gateway verifies Meta webhooks, stores leads, and sends replies through Cloud API.
 
-See the [PRD](PRD.md) and [demo walkthrough](demo/recording.md).
+See the [PRD](PRD.md), [live demo screenshots](demo/), and [walkthrough script](demo/recording.md).
 
 ## Run the demo
 
@@ -26,7 +26,7 @@ See the [PRD](PRD.md) and [demo walkthrough](demo/recording.md).
 
 Meta provisions a test number for sandbox testing. Use the approved recipient list shown in the app dashboard and confirm its current capacity before inviting prospects. The bot sends free-form replies within the 24-hour customer service window that starts or resets with each inbound message. Use the test number, an existing SMTP inbox and a free development tunnel for the demo. Review current pricing before using a real business number. Rotate temporary tokens when they expire, update `.env`, and run `docker compose up -d --force-recreate gateway`. [Meta test setup](https://developers.facebook.com/documentation/business-messaging/whatsapp/get-started) · [Meta reply windows and pricing](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing)
 
-If tester onboarding is impractical, use the live screen recording. WhatsApp Web automation libraries such as Baileys and whatsapp-web.js are unofficial fallback options with account-ban risk.
+If tester onboarding is impractical, share the live demo screenshots. WhatsApp Web automation libraries such as Baileys and whatsapp-web.js are unofficial fallback options with account-ban risk.
 
 ## Customize and test
 
