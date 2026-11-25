@@ -1,18 +1,33 @@
 # PRD: WhatsApp + n8n Demo Bot for Direct-Client Outreach
 
-- **Owner:** Ahmed Mahmoud Abbas
-- **Status:** Draft v1 (Nov 25, 2026)
+- **Owner:** Ahmed Mahmoud Abbas (software engineer in Egypt offering automation work to small businesses)
+- **Status:** Draft v2 (Nov 25, 2026)
 - **Build time target:** ~1 day
 - **Budget:** $0 (free tiers and self-hosted only)
 
+## 0. Summary for a reader with no context
+
+**What it is.** A working WhatsApp chatbot for a fictional dental clinic in Cairo, built with n8n (an open source workflow automation tool). A patient messages it in Arabic or English, sees a menu, gets answers about services, prices and hours, and can request an appointment. The clinic side gets a notification with the booking details.
+
+**The problem.** Small businesses in Egypt and the Gulf (clinics, real estate offices, language centers, online shops) get most customer messages on WhatsApp and answer them by hand, often late. They lose bookings to slow replies. The owner of this repo sells WhatsApp bots and automations to such businesses, but a written offer is hard to trust. A business owner wants to try it on their own phone before paying.
+
+**The solution.** One real, demoable bot that costs nothing to run, plus a short screen recording. The same workflow can be cloned per client by editing data (business name, FAQ answers, booking rules), not code.
+
+**Who it is for.**
+1. Prospective clients: a non-technical business owner who should understand the value in under two minutes.
+2. The owner, as a sales and portfolio artifact.
+3. Anyone reviewing the repo: it shows working integration of a messaging API, a workflow engine and a lead store.
+
+**Terms.** WhatsApp Cloud API: Meta's official API for sending and receiving WhatsApp messages from software. Webhook: a URL that receives incoming messages. n8n: a visual workflow automation tool that can be self-hosted. Lead: a person who showed interest and left contact details. Handoff: passing a chat to a human.
+
 ## 1. Background
 
-The direct-client lane sells WhatsApp bots, n8n automations, and simple dashboards to small businesses in Egypt and the Gulf (dental clinics, real estate offices, language centers, online stores, marketing agencies). The current portfolio (Python backend, Telegram-style bots, scraping, REST APIs, Docker, RAG) has no WhatsApp or n8n artifact, so cold outreach has nothing visual to point at. This repo builds that artifact: one working, demoable WhatsApp bot built on n8n that a clinic owner can try from their own phone in under a minute.
+The owner sells WhatsApp bots, n8n automations, and simple dashboards to small businesses in Egypt and the Gulf (dental clinics, real estate offices, language centers, online stores, marketing agencies). His existing portfolio (Python backend, bots, scraping, REST APIs, Docker, RAG) has no WhatsApp or n8n artifact, so cold outreach has nothing visual to point at. This repo builds that artifact: one working, demoable WhatsApp bot built on n8n that a clinic owner can try from their own phone in under a minute.
 
 ## 2. Goals
 
 - A live demo bot a prospect can message on WhatsApp and get instant, useful replies.
-- A 60-90 second screen recording + screenshots for outreach emails and Fiverr/Khamsat gigs.
+- A 60-90 second screen recording + screenshots for outreach emails and freelance marketplace gigs (Fiverr, Khamsat).
 - Honest proof of skill: everything in the demo must actually work, no mockups.
 - Reusable base: the same n8n workflow should be cloneable per client with only content changes (business name, FAQ answers, booking rules).
 
@@ -32,7 +47,7 @@ Demo conversation the client sees:
 1. Patient sends any message (Arabic or English).
 2. Bot replies in the same language with a menu: 1) Services & prices 2) Working hours & location 3) Book an appointment 4) Talk to a human.
 3. Option 1-2: bot answers instantly from the FAQ table (bilingual).
-4. Option 3: bot collects name, phone, service, preferred day/time in 3 short messages, confirms back, saves the request, and sends a notification to the "clinic" (Ahmed's own WhatsApp/email) so the prospect sees the business side too.
+4. Option 3: bot collects name, phone, service, preferred day/time in 3 short messages, confirms back, saves the request, and sends a notification to the "clinic" (the owner's own WhatsApp or email) so the prospect sees the business side too.
 5. Option 4: bot says a human will reply soon and forwards the chat to the "clinic" notification channel.
 6. Unknown input: polite fallback + menu again. No dead ends.
 
@@ -61,7 +76,7 @@ P1 (nice to have, add only if the day allows):
 - **Local webhook exposure** for development: n8n tunnel option or ngrok free tier.
 - **Storage:** Google Sheets via n8n's Google node (free) as the lead database.
 - **Language detection:** simple rule (Arabic Unicode range check) inside the workflow; no external API.
-- Everything must run with Ahmed's existing stack comfort: Docker, REST, JSON. No new paid service.
+- Everything must run with tools the owner already knows: Docker, REST, JSON. No new paid service.
 
 ## 7. Deliverables (definition of done)
 
@@ -92,5 +107,5 @@ P1 (nice to have, add only if the day allows):
 
 - RAG answering over the client's real documents (reuses existing RAG experience).
 - Real calendar booking (Google Calendar node).
-- Dashboard productization for the "Standard from $100" package.
+- Dashboard productization for the paid starter package (about $100).
 - Meta business verification path for real client deployments.
