@@ -2,7 +2,7 @@
 
 A fictional Cairo clinic built to demonstrate WhatsApp Cloud API and n8n. Customers get an Arabic or English menu, FAQs, appointment requests and a human handoff. n8n routes the conversation and emails the clinic. The gateway verifies Meta webhooks, stores leads, and sends replies through Cloud API.
 
-See the [PRD](PRD.md), [live demo screenshots](demo/), and [walkthrough script](demo/recording.md).
+See the [live demo screenshots](demo/) and [walkthrough script](demo/recording.md).
 
 ## Run the demo
 
